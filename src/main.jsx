@@ -8,6 +8,7 @@ import { router } from './route/Routes.jsx';
 import AuthProvider from './context/AuthProvider.jsx';
 import 'aos/dist/aos.css';
 import Aos from 'aos';
+import { Toaster } from 'react-hot-toast';
   Aos.init({
     duration: 500,      // animation duration
     offset: 100,         // offset (in px) from the original trigger point
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
      <AuthProvider>
        <RouterProvider router={router} />
+       <Toaster/>
      </AuthProvider>
   </StrictMode>,
 )

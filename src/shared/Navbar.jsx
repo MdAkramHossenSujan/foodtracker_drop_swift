@@ -9,7 +9,9 @@ const Navbar = () => {
   const { theme, toggleTheme, user, logOut } = use(AuthContext)
   const navItems = <>
     <li><NavLink to={'/'}>Home</NavLink></li>
+       <li><NavLink to={'/sendParcel'}>Send a parcel</NavLink></li>
     <li><NavLink to={'/about'}>About Us</NavLink></li>
+    <li><NavLink to={'/coverage'}>Coverage</NavLink></li>
   </>
   const handleSignOut = () => {
     logOut()
