@@ -8,12 +8,14 @@ import dayjs from 'dayjs';
 import { useLoaderData } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { v4 as uuidv4 } from 'uuid';
+import useSecureAxios from '../../hooks/useSecureAxios';
 const MySwal = withReactContent(Swal);
 
 const SendParcel = () => {
   const serviceData = useLoaderData();
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
 const {user}=useAuth()
+const axiosSecure=useSecureAxios()
   const type = watch('type');
   const senderRegion = watch('senderRegion');
   const receiverRegion = watch('receiverRegion');
@@ -132,6 +134,10 @@ const generatedTrackingID = () => {
           creation_date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         };
         console.log('Parcel Saved:', newParcel);
+        axiosSecure.post('parcels',newParcel)
+        .then(res=>{
+          console.log(res.data)
+        })
         reset();
         MySwal.fire('Submitted!', 'Your parcel has been submitted.', 'success');
       }

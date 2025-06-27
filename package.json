@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.81.5",
     "aos": "^3.0.0-beta.6",
+    "axios": "^1.10.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.9.1",
     "hot": "^0.0.7",

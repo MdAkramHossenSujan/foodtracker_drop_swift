@@ -13,6 +13,9 @@ const Navbar = () => {
     <li><NavLink to={'/about'}>About Us</NavLink></li>
     <li><NavLink to={'/coverage'}>Coverage</NavLink></li>
   </>
+  const userNavbar=<>
+   <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
+  </>
   const handleSignOut = () => {
     logOut()
       .then(() => {
@@ -34,6 +37,9 @@ const Navbar = () => {
             {
               navItems
             }
+            {
+              user && userNavbar
+            }
           </ul>
         </div>
         <div className='lg:px-8'>
@@ -45,6 +51,9 @@ const Navbar = () => {
           {
             navItems
           }
+           {
+              user && userNavbar
+            }
         </ul>
       </div>
       <div className="navbar-end">
