@@ -1,12 +1,24 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogIn from '../../shared/SocialLogIn';
+import useAuth from '../../hooks/useAuth';
 
 const LogIn = () => {
-    const { register, handleSubmit ,formState:{errors}} = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { signInUser } = useAuth()
+    console.log()
+    const location = useLocation()
+    const navigate = useNavigate()
+    const from = location.state?.from || '/';
     const onSubmit = data => {
-        console.log(data)
+        signInUser(data.email, data.password)
+            .then(result => {
+                console.log(result.user)
+                navigate(from)
+            }).catch(err => {
+                console.log(err)
+            })
     }
     return (
         <div className='lg:px-24 px-8 md:px-18'>
@@ -17,15 +29,15 @@ const LogIn = () => {
                     <label className="label">Email</label>
                     <input {...register('email')} type="email" className="input w-full" placeholder="Email" />
                     <label className="label">Password</label>
-                    <input {...register('password',{
-                        required:true,
-                        minLength:6
+                    <input {...register('password', {
+                        required: true,
+                        minLength: 6
                     })} type="password" className="input w-full" placeholder="Password" />
                     {
-                        errors.password?.type==='required' && <p className='text-red-500'>Password is required</p>
+                        errors.password?.type === 'required' && <p className='text-red-500'>Password is required</p>
                     }
                     {
-                        errors.password?.type==='minLength' && <p className='text-red-600'>Password must be 6 characters or longer</p>
+                        errors.password?.type === 'minLength' && <p className='text-red-600'>Password must be 6 characters or longer</p>
                     }
                     <div><a className="link link-hover">Forgot password?</a></div>
                     <button className="btn btn-neutral mt-4 border-0 text-black bg-[rgb(202,235,102)]">Login</button>
@@ -34,7 +46,7 @@ const LogIn = () => {
             </form>
             <div class="divider">OR</div>
             <div>
-                <SocialLogIn/>
+                <SocialLogIn />
             </div>
         </div>
     );

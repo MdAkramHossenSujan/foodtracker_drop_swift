@@ -4,17 +4,20 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import SocialLogIn from '../../shared/SocialLogIn';
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const togglePassword = () => setShowPassword((prev) => !prev);
     const {createUser}=useAuth()
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors },reset } = useForm()
     const onSubmit = data => {
         console.log(data)
       createUser(data.email,data.password)
       .then(result=>{
         console.log(result.user)
+        toast.success('Registered successfully')
+        reset()
       }).catch(error=>{
         console.log(error)
       })

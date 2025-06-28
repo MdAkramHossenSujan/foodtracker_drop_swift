@@ -4,11 +4,12 @@ import { FaCheckCircle, FaTimesCircle, FaEye, FaTrash, FaDollarSign } from 'reac
 import useAuth from '../../hooks/useAuth';
 import useSecureAxios from '../../hooks/useSecureAxios';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const MyParcels = () => {
     const { user } = useAuth();
     const axiosSecure = useSecureAxios();
-
+const navigate=useNavigate()
 
     const { data: parcels = [], isLoading, refetch } = useQuery({
         queryKey: ['my-parcels', user?.email],
@@ -19,12 +20,7 @@ const MyParcels = () => {
     });
 
     const handlePay = async (id) => {
-        try {
-            // Your payment logic here, e.g. redirect to payment or call API
-            alert(`Pay action clicked for parcel id: ${id}`);
-        } catch (err) {
-            console.error(err);
-        }
+       navigate(`/dashboard/payment/${id}`)
     };
 
     const handleDelete = async (id) => {

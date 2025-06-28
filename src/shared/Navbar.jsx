@@ -4,22 +4,23 @@ import Logo from './Logo';
 import { AuthContext } from '../context/AuthContext';
 import { Moon, Sun } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const { theme, toggleTheme, user, logOut } = use(AuthContext)
   const navItems = <>
     <li><NavLink to={'/'}>Home</NavLink></li>
-       <li><NavLink to={'/sendParcel'}>Send a parcel</NavLink></li>
+    <li><NavLink to={'/sendParcel'}>Send a parcel</NavLink></li>
     <li><NavLink to={'/about'}>About Us</NavLink></li>
     <li><NavLink to={'/coverage'}>Coverage</NavLink></li>
   </>
-  const userNavbar=<>
-   <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
+  const userNavbar = <>
+    <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
   </>
   const handleSignOut = () => {
     logOut()
       .then(() => {
-        alert('Signed Out Successful')
+        toast.success('Signed Out Successful')
       }).catch(error => {
         console.log(error)
       })
@@ -43,7 +44,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div className='lg:px-8'>
-          <Link to={'/'}><Logo /></Link>
+          <Logo />
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -51,13 +52,13 @@ const Navbar = () => {
           {
             navItems
           }
-           {
-              user && userNavbar
-            }
+          {
+            user && userNavbar
+          }
         </ul>
       </div>
       <div className="navbar-end">
-       
+
         {
           user ? <div className='pr-14 md:pr-12 flex gap-1 md:gap-2'>
             <div>
@@ -72,13 +73,13 @@ const Navbar = () => {
               <Tooltip id="view-tooltip" />
             </div>
             <button onClick={handleSignOut} className='btn my-auto btn-sm rounded-xl lg:btn lg:rounded-2xl lg:bg-[#CAEB66] bg-[#CAEB66]'>
-            Sign Out
-          </button>
+              Sign Out
+            </button>
 
           </div> :
             <div className='pr-14 md:pr-12 flex gap-1 md:gap-2'>
-             <Link to={'/register'}> <button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl dark:border dark:border-white'>Sign In</button></Link>
-              <Link to={'login'}><button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl lg:bg-[#CAEB66] bg-[#CAEB66]'>Sign Up</button></Link>
+              <Link to={'/register'}> <button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl dark:border dark:border-white'>Sign Up</button></Link>
+              <Link to={'login'}><button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl lg:bg-[#CAEB66] bg-[#CAEB66]'>Sign In</button></Link>
             </div>
         }
         <label onClick={toggleTheme} className={`cursor-pointer fixed bg-blue-600 dark:bg-blue-900
