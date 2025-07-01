@@ -1,8 +1,10 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import React, { use, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import useSecureAxios from '../../../hooks/useSecureAxios';
+import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -10,6 +12,9 @@ const PaymentForm = () => {
     const [error, setError] = useState()
     const { id } = useParams()
     const axiosSecure = useSecureAxios()
+    const { theme, user } = useAuth()
+    const navigate = useNavigate();
+
     console.log(id)
     const { isPending, data: parcelInfo = {} } = useQuery({
         queryKey: ['parcels', id],
@@ -56,49 +61,89 @@ const PaymentForm = () => {
             payment_method: {
                 card: elements.getElement(CardElement),
                 billing_details: {
-                    // name: user.displayName,
-                    // email: user.email
+                    name: user.displayName,
+                    email: user.email
                 },
             },
         });
         if (result.error) {
-            console.log(result.error.message);
+            setError(result.error.message);
 
         }
         else {
+            setError('')
             if (result.paymentIntent.status === 'succeeded') {
                 console.log('Payment Succeeded!')
                 console.log(result)
+                //Create payment history api
+                const paymentData = {
+                    parcelId: id,
+                    email: user.email,
+                    amount: amountInCent,
+                    paymentMethod: result.paymentIntent.payment_method_types[0],
+                    transactionId: result.paymentIntent.id,
+
+                }
+                const paymentRes = await axiosSecure.post('payments', paymentData);
+                if (paymentRes.data.insertedId) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Successful!',
+                        html: `
+        <p><strong>Transaction ID:</strong> ${result.paymentIntent.id}</p>
+        <p><strong>Amount:</strong> $${(amountInCent / 100).toFixed(2)}</p>
+        <p><strong>Payment Method:</strong> ${result.paymentIntent.payment_method_types[0]}</p>
+      `,
+                        confirmButtonText: 'Go to My Parcels',
+                        confirmButtonColor: '#22c55e', // Tailwind green-500
+                    }).then(() => {
+                        navigate('/dashboard/myParcels');
+                    });
+                }
             }
         }
-    }
-    return (
-        <div>
-            <form
-                onSubmit={handleSubmit}
-                className="max-w-md mx-auto bg-base-100 p-6 rounded-lg shadow-lg space-y-4"
+    
+}
+return (
+    <div >
+        <form
+            onSubmit={handleSubmit}
+            className="max-w-md mx-auto bg-base-100 p-6   rounded-lg shadow-lg space-y-4"
+        >
+            <div className="border border-gray-300  dark:border-gray-700 p-4 rounded">
+                <CardElement
+                    options={{
+                        style: {
+                            base: {
+                                color: theme ? '#ffffff' : '#1a202c',
+                                '::placeholder': {
+                                    color: theme ? '#cccccc' : '#718096',
+                                },
+                            },
+                            invalid: {
+                                color: '#ff4d4f',
+                            },
+                        },
+                    }}
+                />
+            </div>
+
+            <button
+                type="submit"
+                disabled={!stripe}
+                className="btn btn-accent w-full"
             >
-                <div className="border border-gray-300 dark:border-gray-700 p-4 rounded">
-                    <CardElement
-
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    disabled={!stripe}
-                    className="btn btn-accent w-full"
-                >
-                    Pay ${costAmount}
-                </button>
-                {
-                    error && <p className='text-red-500 text-sm'>{error}</p>
-                }
-            </form>
+                Pay ${costAmount}
+            </button>
+            {
+                error && <p className='text-red-500 text-sm'>{error}</p>
+            }
+        </form>
 
 
-        </div>
-    );
+    </div>
+);
 };
 
 export default PaymentForm;

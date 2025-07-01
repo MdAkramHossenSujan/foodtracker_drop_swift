@@ -13,6 +13,9 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcels from "../pages/dashboard/MyParcels";
 import SendParcel from "../pages/sendparcel/SendParcel";
 import Payment from "../pages/dashboard/payment/Payment";
+import PaymentHIstory from "../pages/dashboard/payment/PaymentHIstory";
+import TrackParcel from "../pages/dashboard/trackparcel/TrackParcel";
+import BeaRider from "../pages/rider/BeaRider";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +37,12 @@ export const router = createBrowserRouter([
      <SendParcel/>
           </PrivateRoute>,
           loader:()=>fetch('/warehouses.json')
+        },
+        {
+          path:'bearider',
+          element:<PrivateRoute>
+            <BeaRider/>
+          </PrivateRoute>
         }
     ]
   },
@@ -64,6 +73,13 @@ export const router = createBrowserRouter([
       {
         path:'payment/:id',
         Component:Payment
+      },{
+        path:'paymentsHistory',
+        Component:PaymentHIstory
+      },
+      {
+        path:'track',
+        Component:TrackParcel
       }
     ]
   }

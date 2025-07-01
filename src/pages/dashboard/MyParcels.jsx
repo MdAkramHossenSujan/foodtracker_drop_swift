@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { FaCheckCircle, FaTimesCircle, FaEye, FaTrash, FaDollarSign } from 'react-icons/fa';
 import useAuth from '../../hooks/useAuth';
 import useSecureAxios from '../../hooks/useSecureAxios';
@@ -60,7 +60,7 @@ const navigate=useNavigate()
         }
     };
 
-
+console.log(parcels)
     if (isLoading) {
         return <div>Loading...</div>;
     }

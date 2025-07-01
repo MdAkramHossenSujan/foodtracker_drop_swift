@@ -1,6 +1,7 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../shared/Logo';
+import { FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserCircle, FaHome } from "react-icons/fa";
 
 const DashboardLayout = () => {
     return (
@@ -28,15 +29,39 @@ const DashboardLayout = () => {
                     </div>
                     <div className="mx-2 flex-1 px-2">Navbar Title</div>
                 </div>
-                  <Outlet/>
+                <div className='px-6 md:px-8'>
+                    <Outlet />
+                </div>
             </div>
-           
+
             <div className="drawer-side">
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar content here */}
-                    <Logo/>
-                    <li><NavLink to={'/dashboard/myParcels'}>My Parcel</NavLink></li>
+                    <Logo />
+                    <li><Link className='flex items-center gap-2' to={'/dashboard'}><FaHome/> Home</Link></li>
+                    
+                    <li>
+                        <NavLink to="/dashboard/myParcels" className="flex items-center gap-2">
+                            <FaBox /> My Parcel
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/paymentsHistory" className="flex items-center gap-2">
+                            <FaMoneyCheckAlt /> Payment History
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/track" className="flex items-center gap-2">
+                            <FaMapMarkedAlt /> Track a package
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/profile" className="flex items-center gap-2">
+                            <FaUserCircle /> Profile
+                        </NavLink>
+                    </li>
+
                 </ul>
             </div>
         </div>

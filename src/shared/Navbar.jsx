@@ -13,6 +13,7 @@ const Navbar = () => {
     <li><NavLink to={'/sendParcel'}>Send a parcel</NavLink></li>
     <li><NavLink to={'/about'}>About Us</NavLink></li>
     <li><NavLink to={'/coverage'}>Coverage</NavLink></li>
+     <li><NavLink to={'/bearider'}>Be a Rider</NavLink></li>
   </>
   const userNavbar = <>
     <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
@@ -72,14 +73,14 @@ const Navbar = () => {
               />
               <Tooltip id="view-tooltip" />
             </div>
-            <button onClick={handleSignOut} className='btn my-auto btn-sm rounded-xl lg:btn lg:rounded-2xl lg:bg-[#CAEB66] bg-[#CAEB66]'>
+            <button onClick={handleSignOut} className='btn my-auto btn-sm rounded-xl lg:btn lg:text-black lg:rounded-2xl lg:bg-[#CAEB66] text-black bg-[#CAEB66]'>
               Sign Out
             </button>
 
           </div> :
             <div className='pr-14 md:pr-12 flex gap-1 md:gap-2'>
               <Link to={'/register'}> <button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl dark:border dark:border-white'>Sign Up</button></Link>
-              <Link to={'login'}><button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl lg:bg-[#CAEB66] bg-[#CAEB66]'>Sign In</button></Link>
+              <Link to={'login'}><button className='btn btn-sm rounded-xl lg:btn lg:rounded-2xl text-black lg:bg-[#CAEB66] bg-[#CAEB66]'>Sign In</button></Link>
             </div>
         }
         <label onClick={toggleTheme} className={`cursor-pointer fixed bg-blue-600 dark:bg-blue-900
