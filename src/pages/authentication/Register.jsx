@@ -11,49 +11,49 @@ import useAxios from '../../hooks/useAxios';
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const togglePassword = () => setShowPassword((prev) => !prev);
-    const {createUser, updateUser}=useAuth()
-    const { register, handleSubmit, formState: { errors },reset } = useForm()
-    const [profile,setProfile]=useState('')
-    const axiosInstance=useAxios()
+    const { createUser, updateUser } = useAuth()
+    const { register, handleSubmit, formState: { errors }, reset } = useForm()
+    const [profile, setProfile] = useState('')
+    const axiosInstance = useAxios()
     const onSubmit = data => {
         console.log(data.name)
-      createUser(data.email,data.password)
-      .then(async (result)=>{
-        console.log(result.user)
-        const userProfile={
-            displayName:data.name,
-            photoURL:profile
-        }
-        const userInfo={
-            email:data.email,
-            role:'user',//default
-            createdAt:new Date().toISOString(),
-            lastLogIn:new Date().toISOString()
-        }
-        const userResponse=await axiosInstance.post('/users',userInfo);
-        console.log(userResponse.data)
+        createUser(data.email, data.password)
+            .then(async (result) => {
+                console.log(result.user)
+                const userProfile = {
+                    displayName: data.name,
+                    photoURL: profile
+                }
+                const userInfo = {
+                    email: data.email,
+                    role: 'user',//default
+                    createdAt: new Date().toISOString(),
+                    lastLogIn: new Date().toISOString()
+                }
+                const userResponse = await axiosInstance.post('/users', userInfo);
+                console.log(userResponse.data)
 
-        console.log(userProfile)
-        //Update profile
-        updateUser(userProfile).then(()=>{
-            toast.success('Registered Successfully')
-        }).catch(error=>{
-            console.log(error)
-        })
-        reset()
-      }).catch(error=>{
-        console.log(error)
-      })
+                console.log(userProfile)
+                //Update profile
+                updateUser(userProfile).then(() => {
+                    toast.success('Registered Successfully')
+                }).catch(error => {
+                    console.log(error)
+                })
+                reset()
+            }).catch(error => {
+                console.log(error)
+            })
     }
-    const handleImageUpload=async(e)=>{
-        const image=e.target.files[0]
+    const handleImageUpload = async (e) => {
+        const image = e.target.files[0]
         console.log(image)
-        const formData=new FormData()
-        formData.append('image',image)
+        const formData = new FormData()
+        formData.append('image', image)
         console.log(formData)
 
-const res=await axios.post(`https://api.imgbb.com/1/upload?&key=${import.meta.env.VITE_imageUpload_key}`,formData)
-setProfile(res.data.data.url)
+        const res = await axios.post(`https://api.imgbb.com/1/upload?&key=${import.meta.env.VITE_imageUpload_key}`, formData)
+        setProfile(res.data.data.url)
     }
     return (
         <div className='lg:px-24 px-8 md:px-18'>
@@ -67,7 +67,7 @@ setProfile(res.data.data.url)
                     })} type="text" className="input w-full" placeholder="Your name" />
                     {/*image field */}
                     <label className='label'>Image</label>
-                    <input onChange={handleImageUpload} type="file" className='file-input w-full' placeholder='Your profile image'/>
+                    <input onChange={handleImageUpload} type="file" className='file-input w-full' placeholder='Your profile image' />
                     <label className="label">Email</label>
                     <input {...register('email', {
                         required: true
@@ -95,7 +95,7 @@ setProfile(res.data.data.url)
                             onClick={togglePassword}
                             className="absolute right-3 top-3 z-100 cursor-pointer text-gray-500"
                         >
-                            {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18}/>}
+                            {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
                         </span>
                     </div>
                     <div><a className="link link-hover">Forgot password?</a></div>
@@ -105,7 +105,7 @@ setProfile(res.data.data.url)
             </form>
             <div className="divider">OR</div>
             <div>
-                <SocialLogIn/>
+                <SocialLogIn />
             </div>
         </div>
     );

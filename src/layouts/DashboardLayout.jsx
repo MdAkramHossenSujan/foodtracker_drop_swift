@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../shared/Logo';
-import { FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserCircle, FaHome } from "react-icons/fa";
+import { FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserCircle, FaHome, FaMotorcycle, FaUserClock } from "react-icons/fa";
 
 const DashboardLayout = () => {
     return (
@@ -39,8 +39,8 @@ const DashboardLayout = () => {
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar content here */}
                     <Logo />
-                    <li><Link className='flex items-center gap-2' to={'/dashboard'}><FaHome/> Home</Link></li>
-                    
+                    <li><Link className='flex items-center gap-2' to={'/dashboard'}><FaHome /> Home</Link></li>
+
                     <li>
                         <NavLink to="/dashboard/myParcels" className="flex items-center gap-2">
                             <FaBox /> My Parcel
@@ -59,6 +59,16 @@ const DashboardLayout = () => {
                     <li>
                         <NavLink to="/dashboard/profile" className="flex items-center gap-2">
                             <FaUserCircle /> Profile
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/active-rider" className="flex items-center gap-2">
+                            <FaMotorcycle /> Active Rider
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/pending-riders" className="flex items-center gap-2">
+                            <FaUserClock /> Pending Riders
                         </NavLink>
                     </li>
 

@@ -3,16 +3,18 @@ import { useForm } from "react-hook-form";
 import RiderImage from "../../assets/agent-pending.png";
 import { FaArrowRight } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
+import useSecureAxios from "../../hooks/useSecureAxios";
+import toast from "react-hot-toast";
 
 const BeaRider = () => {
   const { user } = useAuth();
-
+const axiosSecure=useSecureAxios()
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     resetField,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -32,7 +34,7 @@ const BeaRider = () => {
   const [warehouseData, setWarehouseData] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [cities, setCities] = useState([]);
-
+const createdAt=new Date().toISOString()
   // Load warehouses.json on mount
   useEffect(() => {
     fetch("/warehouses.json")
@@ -70,8 +72,20 @@ const BeaRider = () => {
   }, [selectedDistrict, warehouseData, resetField]);
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    const formData={
+      ...data,
+      status: "pending",
+      createdAt:createdAt
+    }
+    console.log("Form Data:", formData);
+    
     // handle your API call here
+    axiosSecure.post('/riders',formData).then(res=>{
+      if(res.data.insertedId){
+        toast.success('Data Added Successfully.')
+        reset()
+      }
+    })
   };
 
   return (
