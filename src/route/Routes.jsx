@@ -25,6 +25,8 @@ import AdminRoute from "./AdminRoute";
 import AssignRider from "../pages/asignrider/AssignRider";
 import PendingDeliveries from "../pages/dashboard/pendingDeliveries/PendingDeliveries";
 import RiderRoute from "./RiderRoute";
+import CompletedDelivery from "../pages/dashboard/completeddelivery/CompletedDelivery";
+import RiderEarning from "../pages/dashboard/riderearning/RiderEarning";
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +101,18 @@ Component:Forbidden
         path:'pending-deliveries',
         element:<RiderRoute>
           <PendingDeliveries/>
+        </RiderRoute>
+      },
+      {
+        path:'completed-deliveries',
+        element:<RiderRoute>
+          <CompletedDelivery/>
+        </RiderRoute>
+      },
+      {
+        path:'rider-earning',
+        element:<RiderRoute>
+          <RiderEarning/>
         </RiderRoute>
       },
      //Admin Links

@@ -68,6 +68,16 @@ const DashboardLayout = () => {
                                 <FaBox /> Pending Deliveries
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/dashboard/completed-deliveries" className="flex items-center gap-2">
+                                <FaBox /> Completed Deliveries
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dashboard/rider-earning" className="flex items-center gap-2">
+                                <FaMoneyCheckAlt /> Rider Earning
+                            </NavLink>
+                        </li>
                         </>
                     }
                     {/*Admin links*/}
