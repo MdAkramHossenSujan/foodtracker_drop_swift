@@ -59,6 +59,18 @@ const DashboardLayout = () => {
                             <FaMapMarkedAlt /> Track a package
                         </NavLink>
                     </li>
+                    {/*Rider links*/}
+                    {
+                        !roleLoading && role == 'rider' &&
+                        <>
+                        <li>
+                            <NavLink to="/dashboard/pending-deliveries" className="flex items-center gap-2">
+                                <FaBox /> Pending Deliveries
+                            </NavLink>
+                        </li>
+                        </>
+                    }
+                    {/*Admin links*/}
                     {
                         !roleLoading && role == 'admin' &&
                         <>

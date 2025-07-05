@@ -51,6 +51,7 @@ const ApprovedRiders = () => {
        <p><strong>Name:</strong> ${rider.name}</p>
         <p><strong>Email:</strong> ${rider.email}</p>
         <p><strong>Status:</strong> ${rider.status}</p>
+        <p><strong>Rider Status:</strong> ${rider?.work_status || 'Not Assigned'}</p>
        <p><strong>Applied At:</strong> ${new Date(rider.createdAt).toLocaleString()}</p>
        <p><strong>City:</strong> ${rider.city}</p>
       <p><strong>Contact:</strong> ${rider.phone}</p>
