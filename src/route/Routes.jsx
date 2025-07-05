@@ -17,8 +17,12 @@ import PaymentHIstory from "../pages/dashboard/payment/PaymentHIstory";
 import TrackParcel from "../pages/dashboard/trackparcel/TrackParcel";
 
 import PendingRiders from "../pages/dashboard/PendingRiders";
-import ActiveRiders from "../pages/dashboard/ACtiveRiders";
 import BeaRider from "../pages/rider/BeaRider";
+import ApprovedRiders from "../pages/dashboard/ApprovedRiders";
+import MakeAdmin from "../pages/MakeAdmin";
+import Forbidden from "../pages/forbidden/Forbidden";
+import AdminRoute from "./AdminRoute";
+import AssignRider from "../pages/asignrider/AssignRider";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +37,10 @@ export const router = createBrowserRouter([
           path:'coverage',
           Component:Coverage,
           loader:()=>fetch('/warehouses.json')
+        },
+        {
+path:'forbidden',
+Component:Forbidden
         },
         {
           path:'sendParcel',
@@ -85,12 +93,26 @@ export const router = createBrowserRouter([
         Component:TrackParcel
       },
       {
-        path:'/dashboard/active-rider',
-        Component:ActiveRiders
+        path:'pending-riders',
+       element:<AdminRoute>
+        <PendingRiders/>
+       </AdminRoute>
+      },{
+        path:'active-rider',
+       element:<AdminRoute>
+        <ApprovedRiders/>
+       </AdminRoute>
+      },{
+        path:'makeadmin',
+        element:<AdminRoute>
+          <MakeAdmin/>
+        </AdminRoute>
       },
       {
-        path:'/dashboard/pending-riders',
-        Component:PendingRiders
+        path:'assign-rider',
+        element:<AdminRoute>
+          <AssignRider/>
+        </AdminRoute>
       }
     ]
   }

@@ -19,7 +19,7 @@ const PendingRiders = () => {
     }
   });
 console.log(pendingRiders)
-  const handleApprove = async (riderId, action) => {
+  const handleApprove = async (riderId, action,email) => {
     MySwal.fire({
       title: 'Are you sure?',
       text: `Do you want to ${action} this rider?`,
@@ -32,8 +32,12 @@ console.log(pendingRiders)
       if (result.isConfirmed) {
         try {
           await axiosSecure.patch(`/riders/${riderId}`, {
-            status: action === 'approve' ? 'approved' : 'rejected'
+            status: action === 'approve' ? 'approved' : 'rejected',
+            email:email
           });
+
+          
+
           refetch();
           Swal.fire('Success', `Rider has been ${action}d successfully.`, 'success');
         } catch (err) {
@@ -44,16 +48,17 @@ console.log(pendingRiders)
     });
   };
 
-  const [selectedRider, setSelectedRider] = useState(null);
-
   const openModal = (rider) => {
-    setSelectedRider(rider);
     MySwal.fire({
       title: `<strong>Rider Details</strong>`,
       html: `
         <p><strong>Name:</strong> ${rider.name}</p>
         <p><strong>Email:</strong> ${rider.email}</p>
         <p><strong>Status:</strong> ${rider.status}</p>
+       <p><strong>Applied At:</strong> ${new Date(rider.createdAt).toLocaleString()}</p>
+               <p><strong>City:</strong> ${rider.city}</p>
+                       <p><strong>Contact:</strong> ${rider.phone}</p>
+                               <p><strong>NID:</strong> ${rider.nid}</p>
       `,
       showCloseButton: true,
       confirmButtonText: 'Close',
@@ -99,13 +104,13 @@ console.log(pendingRiders)
                     </button>
                     <button
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                      onClick={() => handleApprove(rider._id, 'approve')}
+                      onClick={() => handleApprove(rider._id, 'approve',rider.email)}
                     >
                       <FaCheck/>
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      onClick={() => handleApprove(rider._id,'reject')}
+                      onClick={() => handleApprove(rider._id,'reject',rider.email)}
                     >
                       <FaTimes/>
                     </button>

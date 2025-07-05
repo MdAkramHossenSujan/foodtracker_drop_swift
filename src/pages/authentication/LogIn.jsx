@@ -42,7 +42,7 @@ const LogIn = () => {
                     <div><a className="link link-hover">Forgot password?</a></div>
                     <button className="btn btn-neutral mt-4 border-0 text-black bg-[rgb(202,235,102)]">Login</button>
                 </fieldset>
-                <p className='text-[#71717A]'>Don’t have any account? <Link className='text-[#8FA748]' to={'/register'}>Register</Link></p>
+                <p className='text-[#71717A]'>Don’t have any account? <Link state={{from}} className='text-[#8FA748]' to={'/register'}>Register</Link></p>
             </form>
             <div class="divider">OR</div>
             <div>

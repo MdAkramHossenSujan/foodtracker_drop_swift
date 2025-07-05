@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import SocialLogIn from '../../shared/SocialLogIn';
 import toast from 'react-hot-toast';
@@ -14,6 +14,9 @@ const Register = () => {
     const { createUser, updateUser } = useAuth()
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
     const [profile, setProfile] = useState('')
+    const location=useLocation()
+    const navigate=useNavigate()
+    const from=location.state?.from || '/'
     const axiosInstance = useAxios()
     const onSubmit = data => {
         console.log(data.name)
@@ -37,6 +40,7 @@ const Register = () => {
                 //Update profile
                 updateUser(userProfile).then(() => {
                     toast.success('Registered Successfully')
+                    navigate(from)
                 }).catch(error => {
                     console.log(error)
                 })

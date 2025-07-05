@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../shared/Logo';
-import { FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserCircle, FaHome, FaMotorcycle, FaUserClock } from "react-icons/fa";
+import { FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserCircle, FaHome, FaMotorcycle, FaUserClock, FaUserShield } from "react-icons/fa";
+import useUserRole from '../hooks/useUserRole';
 
 const DashboardLayout = () => {
+    const { role, roleLoading } = useUserRole()
+    console.log(role)
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -56,7 +59,10 @@ const DashboardLayout = () => {
                             <FaMapMarkedAlt /> Track a package
                         </NavLink>
                     </li>
-                    <li>
+                    {
+                        !roleLoading && role == 'admin' &&
+                        <>
+                        <li>
                         <NavLink to="/dashboard/profile" className="flex items-center gap-2">
                             <FaUserCircle /> Profile
                         </NavLink>
@@ -71,10 +77,21 @@ const DashboardLayout = () => {
                             <FaUserClock /> Pending Riders
                         </NavLink>
                     </li>
-
-                </ul>
-            </div>
+<li>
+                        <NavLink to="/dashboard/makeadmin" className="flex items-center gap-2">
+                            <FaUserShield /> Make Admin
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/assign-rider" className="flex items-center gap-2">
+                            <FaMotorcycle /> Assign Rider
+                        </NavLink>
+                    </li>
+                        </>
+                    }
+            </ul>
         </div>
+        </div >
     );
 };
 
