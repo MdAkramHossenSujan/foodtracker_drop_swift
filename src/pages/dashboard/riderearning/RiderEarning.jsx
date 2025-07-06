@@ -1,15 +1,12 @@
-import React, { useMemo, useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useMemo} from 'react';
+import { useQuery} from '@tanstack/react-query';
 import useSecureAxios from '../../../hooks/useSecureAxios';
 import useAuth from '../../../hooks/useAuth';
-import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
 
 const RiderEarningsDashboard = () => {
   const { user, loading } = useAuth();
   const axiosSecure = useSecureAxios();
-  const queryClient = useQueryClient();
-  const [isCashoutProcessing, setIsCashoutProcessing] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['rider-earnings', user?.email],
@@ -107,20 +104,6 @@ const RiderEarningsDashboard = () => {
     };
   }, [data]);
 
-  const handleCashout = () => {
-    Swal.fire({
-      title: 'Confirm Cashout',
-      text: `Cash out ৳${summary.totalPendingEarnings}?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Cash Out'
-    }).then(result => {
-      if (result.isConfirmed) {
-        setIsCashoutProcessing(true);
-       
-      }
-    });
-  };
 
   if (isLoading) return <p className="text-center mt-10">Loading earnings...</p>;
   if (isError) return <p className="text-center text-red-500 mt-10">Failed to load earnings.</p>;

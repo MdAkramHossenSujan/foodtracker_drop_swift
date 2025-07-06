@@ -9,6 +9,8 @@ import { useLoaderData, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { v4 as uuidv4 } from 'uuid';
 import useSecureAxios from '../../hooks/useSecureAxios';
+import useTrackingLogger from '../../hooks/useTrackingLogger';
+
 const MySwal = withReactContent(Swal);
 
 const SendParcel = () => {
@@ -17,7 +19,7 @@ const SendParcel = () => {
   const navigate=useNavigate()
 const {user}=useAuth()
 const axiosSecure=useSecureAxios()
-  const type = watch('type');
+const {logTracking}=useTrackingLogger()
   const senderRegion = watch('senderRegion');
   const receiverRegion = watch('receiverRegion');
 const generatedTrackingID = () => {
@@ -136,8 +138,16 @@ const generatedTrackingID = () => {
         };
         console.log('Parcel Saved:', newParcel);
         axiosSecure.post('parcels',newParcel)
-        .then(res=>{
+        .then(async(res)=>{
           console.log(res.data)
+         await logTracking({
+            tracking_id:newParcel.tracking_id,
+            status:'Parcel Submitted',
+            details:`Created by ${user.displayName}`,
+            location:newParcel.receiverRegion,
+            updated_by:user.email
+          })
+
           navigate('/dashboard/myParcels')
         })
         reset();

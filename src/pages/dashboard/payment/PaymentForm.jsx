@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import useSecureAxios from '../../../hooks/useSecureAxios';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import useTrackingLogger from '../../../hooks/useTrackingLogger';
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -14,7 +15,7 @@ const PaymentForm = () => {
     const axiosSecure = useSecureAxios()
     const { theme, user } = useAuth()
     const navigate = useNavigate();
-
+    const { logTracking } = useTrackingLogger()
     console.log(id)
     const { isPending, data: parcelInfo = {} } = useQuery({
         queryKey: ['parcels', id],
@@ -97,53 +98,61 @@ const PaymentForm = () => {
       `,
                         confirmButtonText: 'Go to My Parcels',
                         confirmButtonColor: '#22c55e', // Tailwind green-500
-                    }).then(() => {
+                    }).then(async () => {
+
+                        await logTracking({
+                            tracking_id: parcelInfo.tracking_id,
+                            status: 'Parcel Expense Paid',
+                            details: `Paid by ${user.displayName}`,
+                            location: parcelInfo.receiverRegion,
+                            updated_by: user.email
+                        })
                         navigate('/dashboard/myParcels');
                     });
                 }
             }
         }
-    
-}
-return (
-    <div >
-        <form
-            onSubmit={handleSubmit}
-            className="max-w-md mx-auto bg-base-100 p-6   rounded-lg shadow-lg space-y-4"
-        >
-            <div className="border border-gray-300  dark:border-gray-700 p-4 rounded">
-                <CardElement
-                    options={{
-                        style: {
-                            base: {
-                                color: theme ? '#ffffff' : '#1a202c',
-                                '::placeholder': {
-                                    color: theme ? '#cccccc' : '#718096',
+
+    }
+    return (
+        <div >
+            <form
+                onSubmit={handleSubmit}
+                className="max-w-md mx-auto bg-base-100 p-6   rounded-lg shadow-lg space-y-4"
+            >
+                <div className="border border-gray-300  dark:border-gray-700 p-4 rounded">
+                    <CardElement
+                        options={{
+                            style: {
+                                base: {
+                                    color: theme ? '#ffffff' : '#1a202c',
+                                    '::placeholder': {
+                                        color: theme ? '#cccccc' : '#718096',
+                                    },
+                                },
+                                invalid: {
+                                    color: '#ff4d4f',
                                 },
                             },
-                            invalid: {
-                                color: '#ff4d4f',
-                            },
-                        },
-                    }}
-                />
-            </div>
+                        }}
+                    />
+                </div>
 
-            <button
-                type="submit"
-                disabled={!stripe}
-                className="btn btn-accent w-full"
-            >
-                Pay ${costAmount}
-            </button>
-            {
-                error && <p className='text-red-500 text-sm'>{error}</p>
-            }
-        </form>
+                <button
+                    type="submit"
+                    disabled={!stripe}
+                    className="btn btn-accent w-full"
+                >
+                    Pay ${costAmount}
+                </button>
+                {
+                    error && <p className='text-red-500 text-sm'>{error}</p>
+                }
+            </form>
 
 
-    </div>
-);
+        </div>
+    );
 };
 
 export default PaymentForm;
